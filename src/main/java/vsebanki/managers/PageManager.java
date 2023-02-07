@@ -31,9 +31,7 @@ public class PageManager {
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
-
             }
-
         }
         return (T) mapPages.get(page.getName());
     }

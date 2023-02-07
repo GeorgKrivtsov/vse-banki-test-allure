@@ -7,6 +7,7 @@ import vsebanki.managers.DriverManager;
 import vsebanki.managers.InitManager;
 import vsebanki.managers.PageManager;
 import vsebanki.managers.TestPropManager;
+import vsebanki.product.DataManager;
 import vsebanki.utils.PropsConst;
 
 public class BaseTests {
@@ -14,6 +15,7 @@ public class BaseTests {
     private DriverManager driverManager = DriverManager.getInstance();
     private TestPropManager propManager = TestPropManager.getInstance();
     protected PageManager pageManager = PageManager.getInstance();
+    protected DataManager dataManager = DataManager.getDataManager();
 
     @BeforeAll
     public static void beforeAll(){
@@ -30,7 +32,9 @@ public class BaseTests {
     @AfterEach
     public void after() {
         InitManager.quitFramework();
+        dataManager.removeListOfDeposit();
         pageManager.clearPages();
+
     }
 
 
