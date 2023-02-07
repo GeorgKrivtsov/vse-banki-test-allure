@@ -25,6 +25,7 @@
         <selenium-java.version>4.3.0</selenium-java.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
+        <lombok.version>1.18.24</lombok.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
@@ -70,13 +71,20 @@
             <version>${junit-platform-launcher.version}</version>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>${allure-junit5.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
 
     </dependencies>
 
