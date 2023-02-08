@@ -3,13 +3,16 @@ package vsebanki;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import vsebanki.managers.DriverManager;
 import vsebanki.managers.InitManager;
 import vsebanki.managers.PageManager;
 import vsebanki.managers.TestPropManager;
 import vsebanki.product.DataManager;
+import vsebanki.utils.MyAllureListener;
 import vsebanki.utils.PropsConst;
 
+@ExtendWith(MyAllureListener.class)
 public class BaseTests {
 
     private DriverManager driverManager = DriverManager.getInstance();

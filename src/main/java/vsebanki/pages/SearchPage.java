@@ -1,5 +1,6 @@
 package vsebanki.pages;
 
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,16 +17,20 @@ public class SearchPage extends BasePage {
     @FindBy(xpath = "//div[@data-test='text' and contains(text(), 'вкладов подобрано')]")
     private WebElement searchResultCount;
 
+    @Step("Нажать на кнопку открытия формы для фильтрации")
     public FilterForm clickOnFilterButton(){
         waitUtilElementToBeClickable(filterButton).click();
         return pageManager.getPage(FilterForm.class);
     }
 
+    @Step("Получить список объектов из предложенных депозитов")
     public SearchPage getListOfDeposit(){
         dataManager.getListOfDeposit(listOfBanksElement);
         return this;
     }
 
+
+    @Step("Проверить в предложенных депозитах вклад от банка {nameOfBank} со ставкой {bet}, сроком {period} и необходимым доходом {profit}")
     public SearchPage checkOffer(String nameOfBank, String bet, String period, String profit) {
         waitStabilityPage(5000, 250);
         for(Bank deposit : dataManager.getProductList()){

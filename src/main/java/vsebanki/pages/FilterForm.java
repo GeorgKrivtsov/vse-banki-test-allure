@@ -1,6 +1,7 @@
 package vsebanki.pages;
 
 import dev.failsafe.internal.util.Assert;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -26,16 +27,19 @@ public class FilterForm extends BasePage {
     private WebElement buttonShowResult;
 
 
+    @Step("Ввести желаемую сумму вклада {count}")
     public FilterForm inputAmountSum(String count){
         amountSum.sendKeys(count);
         return  this;
     }
 
+    @Step("Проверить введенную сумму вклада с фактической")
     public FilterForm checkInputSum(String count){
         Assertions.assertEquals(amountSum.getAttribute("value"), count, "Значение поля \"сумма\" не соответствект введенному значению");
         return  this;
     }
 
+    @Step("Выбрать срок вклада {time}")
     public FilterForm selectTimeOfContribution(String time) {
         timeContribution.click();
         List<WebElement> listOfPeriod = timeContribution.findElements(By.xpath(".//li"));
@@ -48,13 +52,13 @@ public class FilterForm extends BasePage {
         Assertions.fail("Срок " + time + " не найден в выпадающем списке");
         return this;
     }
-
+    @Step("Проверить срок вклада")
     public FilterForm checkTimeOfContribution(String time) {
         WebElement timeText = timeContribution.findElement(By.xpath(".//span[contains(@class, 'DropDownText')]"));
         Assertions.assertEquals(timeText.getText(), time, "Выбранный срок вклада не соответствует заданному");
         return this;
     }
-
+    @Step("Выбрать тип вклада \"{name}\" ")
     public FilterForm selectTypeOfContribution(String name) {
         typeOfContribution.click();
         List<WebElement> listOfTypes = typeOfContribution.findElements(By.xpath(".//li"));
@@ -68,12 +72,14 @@ public class FilterForm extends BasePage {
         return this;
     }
 
+    @Step("Проверка выбранного типа вклада")
     public FilterForm checkTypeOfContribution(String name) {
         WebElement typeText = typeOfContribution.findElement(By.xpath(".//span[contains(@class, 'DropDownText')]"));
         Assertions.assertEquals(typeText.getText(), name, "Выбранный тип вклада не соответствует заданному");  //Переписать проверку с возможностью проверять без учета регистра
         return this;
     }
 
+    @Step("Выбор банка \"{name}\" по имени")
     public FilterForm selectBanks(String name) {
         selectBank.click();
         for (WebElement bank : listOfBanks) {
@@ -88,6 +94,7 @@ public class FilterForm extends BasePage {
         return this;
     }
 
+    @Step("Проверка что заданный банк \"{name}\" выбран")
     public FilterForm checkSelectBank(String name) {
 
         selectBank.click();
@@ -104,6 +111,7 @@ public class FilterForm extends BasePage {
         return this;
     }
 
+    @Step("Выбор чекбокса по названию \"{name}\"")
     public FilterForm selectCheckBox(String name){
         for (WebElement item : listCheckBox) {
             if(item.getText().contains(name)) {
@@ -115,6 +123,7 @@ public class FilterForm extends BasePage {
         return this;
     }
 
+    @Step("Нажать кнопку \"Показать\"")
     public SearchPage showFilterResult(){
         buttonShowResult.click();
         return pageManager.getPage(SearchPage.class);
