@@ -19,7 +19,7 @@ public class SearchPage extends BasePage {
 
     @Step("Нажать на кнопку открытия формы для фильтрации")
     public FilterForm clickOnFilterButton(){
-        waitUtilElementToBeClickable(filterButton).click();
+        waitUntilElementToBeClickable(filterButton).click();
         return pageManager.getPage(FilterForm.class);
     }
 

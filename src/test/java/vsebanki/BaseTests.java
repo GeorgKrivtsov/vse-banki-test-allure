@@ -1,5 +1,6 @@
 package vsebanki;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,10 +35,14 @@ public class BaseTests {
 
     @AfterEach
     public void after() {
-        InitManager.quitFramework();
         dataManager.removeListOfDeposit();
         pageManager.clearPages();
 
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        InitManager.quitFramework();
     }
 
 

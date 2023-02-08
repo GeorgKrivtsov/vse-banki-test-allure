@@ -21,11 +21,28 @@ public class BasePage {
         PageFactory.initElements(driverManager.getDriver(), this);
     }
 
-    protected WebElement waitUtilElementToBeClickable(WebElement element) {
+    protected WebElement waitUntilElementToBeClickable(WebElement element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    protected WebElement waitUtilElementToBeVisible(WebElement element) {
+    protected WebElement waitUntilElementToBeVisible(WebElement element) {
         return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    protected void waitStabilityPage (int maxWaitMillis, int pollDelimiter) {
+        double startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() < startTime + maxWaitMillis) {
+            String prevState = driverManager.getDriver().getPageSource();
+            wait(pollDelimiter);
+            if(prevState.equals(driverManager.getDriver().getPageSource()));
+        }
+    }
+
+    public void wait(int mlSec) {
+        try {
+            Thread.sleep(mlSec);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

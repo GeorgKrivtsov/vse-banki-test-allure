@@ -1,6 +1,5 @@
 package vsebanki.pages;
 
-import dev.failsafe.internal.util.Assert;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
@@ -18,12 +17,12 @@ public class FilterForm extends BasePage {
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//label[contains(text(), 'Тип вклада')]/..")
     private WebElement typeOfContribution;
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//label[@data-testid and contains(text(), 'Банки')]/..")
-    private WebElement selectBank;
+    private WebElement inputBank;
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//div[@data-test='dropdown']//li")
     private List<WebElement> listOfBanks;
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//label[contains(@class, 'Checkbox')]")
     private List<WebElement> listCheckBox;
-    @FindBy(xpath = "//div[contains(@class, 'Modal')]//div[contains(text(), 'Показать')]/../../..")
+    @FindBy(xpath = "//div[contains(@class, 'Modal')]/button") ////div[contains(@class, 'Modal')]//div[contains(text(), 'Показать')]/../../..
     private WebElement buttonShowResult;
 
 
@@ -79,30 +78,14 @@ public class FilterForm extends BasePage {
         return this;
     }
 
-    @Step("Выбор банка \"{name}\" по имени")
-    public FilterForm selectBanks(String name) {
-        selectBank.click();
-        for (WebElement bank : listOfBanks) {
-            if(bank.getText().contains(name)) {
-                WebElement checkBoxOfBank = bank.findElement(By.xpath(".//span[contains(@data-testid, 'checkbox-icon')]"));
-                checkBoxOfBank.click();
-                selectBank.click();
-                return this;
-            }
-        }
-        Assertions.fail("В списке банков нет банка " + name);
-        return this;
-    }
-
     @Step("Проверка что заданный банк \"{name}\" выбран")
     public FilterForm checkSelectBank(String name) {
-
-        selectBank.click();
+        inputBank.click();
         for (WebElement bank : listOfBanks) {
             if(bank.getText().contains(name)){
                 WebElement checkBox = bank.findElement(By.xpath(".//input"));
                 Assertions.assertTrue(Boolean.parseBoolean(checkBox.getAttribute("checked")), "Введенный банк не выбран");
-                selectBank.click();
+                inputBank.click();
                 return this;
             }
         }
@@ -123,10 +106,96 @@ public class FilterForm extends BasePage {
         return this;
     }
 
+    @Step("Выбор параметров {parameters}")
+    public FilterForm selectCheckBoxes(List<String> parameters){
+        for (String parameter : parameters) {
+            selectCheckBox(parameter);
+        }
+        return this;
+    }
+
+    public FilterForm checkSelectedCheckBox(String name) {
+        for (WebElement item : listCheckBox) {
+            if(item.getText().contains(name)) {
+                WebElement checkBox = item.findElement(By.xpath("./input[@type='checkbox']"));
+                Assertions.assertEquals(Boolean.parseBoolean(checkBox.getAttribute("checked")), true, "Чекбокс с названием \"" + name + "\" не отмечен");
+                return this;
+            }
+        }
+        return this;
+    }
+
+    @Step("Выбор параметров {parameters}")
+    public FilterForm checkedSelectCheckBoxes(List<String> parameters){
+        for (String parameter : parameters) {
+            checkSelectedCheckBox(parameter);
+        }
+        return this;
+    }
+
+
+    @Step("Проверка количества вкладов {countDeposits}")
+    public FilterForm checkCountDepositsInButton(String countDeposits) {
+        waitStabilityPage(5000, 200);
+        Assertions.assertEquals(countDeposits, buttonShowResult.getText()
+                        .replaceAll("[^0-9]", "")
+                , "Количество вкладов не равно " + countDeposits);
+        return this;
+    }
+
+
     @Step("Нажать кнопку \"Показать\"")
     public SearchPage showFilterResult(){
         buttonShowResult.click();
         return pageManager.getPage(SearchPage.class);
+    }
+
+
+    @Step("Выбор банка {nameOfBank}")
+    public FilterForm selectBank(String nameOfBank) {
+        inputBank.click();
+//        inputBank.sendKeys(nameOfBank);
+        for (WebElement selectParameter : listOfBanks) {
+            if (waitUntilElementToBeVisible(selectParameter).getText().contains(nameOfBank)) {
+                selectParameter.click();
+                inputBank.click();
+                return this;
+            }
+        }
+
+        Assertions.fail("Не найден банк " + nameOfBank);
+        return this;
+    }
+
+    @Step("Выбор банков {banks}")
+    public FilterForm selectBanks(List<String> banks){
+        for (String bank : banks) {
+            selectBank(bank);
+        }
+        return this;
+    }
+
+//    private FilterForm checkSelectBank(String nameOfBank) {
+//        inputBank.click();
+//        for (WebElement item : listOfBanks) {
+//            if (waitUntilElementToBeVisible(item).getText().contains(nameOfBank)) {
+//                waitStabilityPage(5000, 200);
+//                WebElement checkBox = item.findElement(By.xpath("./input[@type='checkbox']"));
+//                Assertions.assertEquals(Boolean.parseBoolean(checkBox.getAttribute("checked")), true, "Чекбокс с названием \"" + nameOfBank + "\" не отмечен");
+//                inputBank.click();
+//                return this;
+//            }
+//        }
+//        Assertions.fail("Не найден банк " + nameOfBank);
+//        return this;
+//    }
+
+    @Step("Проверка выбора банков {banks}")
+    public FilterForm checkBanks(List<String> banks){
+        for (String bank : banks) {
+            checkSelectBank(bank);
+        }
+        return this;
     }
 
 }
