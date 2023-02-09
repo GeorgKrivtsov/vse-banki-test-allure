@@ -16,7 +16,7 @@ public class FilterForm extends BasePage {
     private WebElement timeContribution;
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//label[contains(text(), 'Тип вклада')]/..")
     private WebElement typeOfContribution;
-    @FindBy(xpath = "//div[contains(@class, 'Modal')]//label[@data-testid and contains(text(), 'Банки')]/..")
+    @FindBy(xpath = "//div[@direction='vert']//label[contains(text(),'Банки')]//../input")
     private WebElement inputBank;
     @FindBy(xpath = "//div[contains(@class, 'Modal')]//div[@data-test='dropdown']//li")
     private List<WebElement> listOfBanks;
@@ -154,7 +154,7 @@ public class FilterForm extends BasePage {
     @Step("Выбор банка {nameOfBank}")
     public FilterForm selectBank(String nameOfBank) {
         inputBank.click();
-//        inputBank.sendKeys(nameOfBank);
+        inputBank.sendKeys(nameOfBank);
         for (WebElement selectParameter : listOfBanks) {
             if (waitUntilElementToBeVisible(selectParameter).getText().contains(nameOfBank)) {
                 selectParameter.click();
